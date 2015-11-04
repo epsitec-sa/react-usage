@@ -1,0 +1,68 @@
+{
+  "requireBlocksOnNewline":                   true,
+  "requireCamelCaseOrUpperCaseIdentifiers":   true,
+  "requireCapitalizedConstructors":           true,
+  "requireCommaBeforeLineBreak":              true,
+  "requireCurlyBraces":                       ["if", "else", "for", "try", "catch"],
+  "requireDotNotation":                       true,
+  "requireLineFeedAtFileEnd":                 true,
+  "requireOperatorBeforeLineBreak":           true,
+  "requireParenthesesAroundIIFE":             true,
+
+  "requireSpaceBetweenArguments":             true,
+  "requireSpacesInCallExpression":            true,
+  "requireSpacesInForStatement":              true,
+
+  "requireSpaceAfterBinaryOperators":         true,
+  "requireSpaceAfterKeywords":                true,
+  "requireSpaceAfterLineComment":             true,
+
+  "requireSpaceBeforeBinaryOperators":        true,
+  "requireSpaceBeforeBlockStatements":        true,
+  "requireSpaceBeforeObjectValues":           true,
+
+  "requireSpacesInConditionalExpression":     true,
+  "requireSpacesInFunction": {
+    "beforeOpeningRoundBrace":                true,
+    "beforeOpeningCurlyBrace":                true
+  },
+
+  "disallowEmptyBlocks":                      true,
+  "disallowKeywordsOnNewLine":                ["else", "catch"],
+  "disallowNewlineBeforeBlockStatements":     true,
+  "disallowPaddingNewlinesInBlocks":          false,
+  "disallowQuotedKeysInObjects":              true,
+  "disallowMixedSpacesAndTabs":               true,
+  "disallowTrailingWhitespace":               true,
+
+  "disallowSpaceAfterPrefixUnaryOperators":   true,
+  "disallowSpaceBeforePostfixUnaryOperators": true,
+  "disallowSpaceAfterObjectKeys":             true,
+
+  "disallowSpacesInsideArrayBrackets":        { "allExcept": [ "}", "]" ]},
+  "disallowSpacesInsideObjectBrackets":       { "allExcept": [ "}", "]" ]},
+
+  "disallowYodaConditions":                   true,
+
+  "safeContextKeyword":                       ["self"],
+
+  "jsDoc": {
+    "checkParamNames":                        true,
+    "checkRedundantParams":                   true,
+    "requireParamTypes":                      true
+  },
+
+  "validateIndentation":                      2,
+  "validateParameterSeparator":               ", ",
+  "validateQuoteMarks":                       "'",
+  "validateLineBreaks":                       "CRLF",
+
+  "maximumLineLength": {
+    "value":                                  120,
+    "allowUrlComments":                       true,
+    "allowRegex":                             true
+  },
+
+  "esnext":                                   true,
+  "requireSemicolons":                        true
+}

@@ -1,0 +1,38 @@
+{
+  "name": "electrum-store",
+  "version": "0.0.1",
+  "description": "Electrum store provides the state for pure electrum components.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/**/*.spec.jsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/epsitec-sa/electrum-store.git"
+  },
+  "author": "Epsitec SA",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/epsitec-sa/electrum-store/issues"
+  },
+  "homepage": "https://github.com/epsitec-sa/electrum-store",
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.0.20",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-react": "^6.0.15",
+    "chai": "^3.4.0",
+    "dirty-chai": "^1.2.2",
+    "jsdom": "^7.0.2",
+    "mai-chai": "^0.3.0",
+    "mocha": "^2.3.3",
+    "react": "^0.14.2",
+    "react-addons-test-utils": "^0.14.2",
+    "react-dom": "^0.14.2"
+  }
+}

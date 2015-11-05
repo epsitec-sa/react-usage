@@ -4,7 +4,7 @@
   "description": "Electrum store provides the state for pure electrum components.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.spec.jsx"
+    "test": "mocha test/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -26,10 +26,8 @@
     "babel-core": "^6.0.20",
     "babel-preset-es2015": "^6.0.15",
     "babel-preset-react": "^6.0.15",
-    "chai": "^3.4.0",
-    "dirty-chai": "^1.2.2",
     "jsdom": "^7.0.2",
-    "mai-chai": "^0.3.0",
+    "mai-chai": "0.x",
     "mocha": "^2.3.3",
     "react": "^0.14.2",
     "react-addons-test-utils": "^0.14.2",

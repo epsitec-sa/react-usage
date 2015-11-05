@@ -4,10 +4,11 @@ var babel = require ('babel-core');
 module.exports = function (wallaby) {
   return {
     files: [
-      {pattern: 'test/**/*.js'}
+      {pattern: 'test/test_helper.js'},
+      {pattern: 'test/components/**/*.js'}
     ],
     tests: [
-      {pattern: 'test/**/*.spec.jsx'},
+      {pattern: 'test/**/*.spec.js'},
     ],
     compilers: {
       '**/*.js*': wallaby.compilers.babel ({

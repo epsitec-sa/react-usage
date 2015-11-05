@@ -1,21 +1,18 @@
 {
-  "name": "electrum-store",
+  "name": "react-usage",
   "version": "0.0.1",
-  "description": "Electrum store provides the state for pure electrum components.",
+  "description": "Playground to experiment with React and wallaby.js.",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/**/*.spec.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/epsitec-sa/electrum-store.git"
+    "url": "https://github.com/epsitec-sa/react-usage.git"
   },
   "author": "Epsitec SA",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/epsitec-sa/electrum-store/issues"
-  },
-  "homepage": "https://github.com/epsitec-sa/electrum-store",
+  "homepage": "https://github.com/epsitec-sa/react-usage",
   "babel": {
     "presets": [
       "es2015",

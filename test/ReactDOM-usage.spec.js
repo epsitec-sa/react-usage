@@ -76,6 +76,7 @@ describe ('ReactDOM', () => {
       expect (componentA === componentB).to.be.false ();
     });
   });
+
   describe ('unmountComponentAtNode()', () => {
     it ('removes mounted component', () => {
       const mountNode = document.getElementById ('root');
@@ -85,6 +86,7 @@ describe ('ReactDOM', () => {
       expect (mountNode.children).to.have.length (0);
     });
   });
+
   describe ('findDOMNode()', () => {
     it ('returns DOM element', () => {
       const mountNode = document.getElementById ('root');

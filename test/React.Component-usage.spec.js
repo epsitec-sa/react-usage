@@ -91,6 +91,19 @@ describe ('React.Component', () => {
         expect (component.state).to.have.property ('counter', 0);
         expect (component.props).to.have.property ('id', 'default');
       });
+      it ('warns if properties don\'t match the expected type', () => {
+        class Foo extends React.Component {
+          render () {
+            return <div/>;
+          }
+        }
+        Foo.propTypes = {a: React.PropTypes.string, b: React.PropTypes.number};
+
+        const spyConsoleError = spy.on (console, 'error');
+        const mountNode = document.getElementById ('root');
+        ReactDOM.render (<Foo a={1} b='x' c='y'/>, mountNode);
+        expect (spyConsoleError).to.be.called (2);
+      });
     });
   });
 });

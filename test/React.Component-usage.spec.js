@@ -106,4 +106,82 @@ describe ('React.Component', () => {
       });
     });
   });
+
+  describe ('Lifecycle Methods', () => {
+    var actions = '';
+
+    class Foo extends React.Component {
+      constructor (props) {
+        super (props);
+        this.state = {x: '-'};
+      }
+      componentWillMount () {
+        actions += 'will-mount/';
+      }
+      componentDidMount () {
+        actions += 'did-mount/';
+      }
+      componentWillReceiveProps (nextProps) {
+        console.log (nextProps.name);
+        actions += `will-rcv-props:${nextProps.name}/`;
+      }
+      shouldComponentUpdate (nextProps, nextState) {
+        actions += `should-update:${nextProps.name}:${nextState.x}/`;
+        return true;
+      }
+      componentWillUpdate (nextProps, nextState) {
+        actions += `will-update:${nextProps.name}:${nextState.x}/`;
+      }
+      componentDidUpdate (prevProps, prevState) {
+        actions += `did-update:${prevProps.name}:${prevState.x}/`;
+      }
+      componentWillUnmount () {
+        actions += 'will-unmount/';
+      }
+      render () {
+        actions += 'render/';
+        return <div/>;
+      }
+    }
+
+    it ('ReactDOM.render calls componentWillMount/render/DidMount()', () => {
+      actions = '';
+      const mountNode = document.getElementById ('root');
+      ReactDOM.render (<Foo name='foo'/>, mountNode);
+      expect (actions).to.equal ('will-mount/render/did-mount/');
+      ReactDOM.unmountComponentAtNode (mountNode);
+    });
+    it ('component.SetState calls componentShouldUpdate/WillUpdate/render/DidUpdate()', () => {
+      const mountNode = document.getElementById ('root');
+      const component = ReactDOM.render (<Foo name='foo'/>, mountNode);
+      actions = '';
+      component.setState ({x: 'a'});
+      expect (actions).to.equal ('should-update:foo:a/will-update:foo:a/render/did-update:foo:-/');
+      actions = '';
+      ReactDOM.render (<Foo name='bar'/>, mountNode);
+      expect (actions).to.equal ('will-rcv-props:bar/should-update:bar:a/will-update:bar:a/render/did-update:foo:a/');
+      actions = '';
+      ReactDOM.unmountComponentAtNode (mountNode);
+      expect (actions).to.equal ('will-unmount/');
+      ReactDOM.unmountComponentAtNode (mountNode);
+    });
+    it ('ReactDOM.render/2 calls componentWillReceiveProps/ShouldUpdate/WillUpdate/render/DidUpdate()', () => {
+      const mountNode = document.getElementById ('root');
+      ReactDOM.render (<Foo name='foo'/>, mountNode);
+      actions = '';
+      ReactDOM.render (<Foo name='bar'/>, mountNode);
+      expect (actions).to.equal ('will-rcv-props:bar/should-update:bar:-/will-update:bar:-/render/did-update:foo:-/');
+      actions = '';
+      ReactDOM.unmountComponentAtNode (mountNode);
+      expect (actions).to.equal ('will-unmount/');
+      ReactDOM.unmountComponentAtNode (mountNode);
+    });
+    it ('ReactDOM.unmountComponentAtNode calls componentWillUnmount()', () => {
+      const mountNode = document.getElementById ('root');
+      ReactDOM.render (<Foo name='foo'/>, mountNode);
+      actions = '';
+      ReactDOM.unmountComponentAtNode (mountNode);
+      expect (actions).to.equal ('will-unmount/');
+    });
+  });
 });

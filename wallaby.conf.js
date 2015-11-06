@@ -29,13 +29,15 @@ module.exports = function (wallaby) {
       // See http://wallabyjs.com/docs/config/bootstrap.html
       console.log ('Setup wallaby');
 
+      var sep = require ('path').sep;
+
       // Remove react from the require.cache, or else some code might not get
       // executed when editing the source code.
       // See https://github.com/wallabyjs/public/issues/321
 
       Object.keys (require.cache)
         .forEach (function (k) {
-          if ((k.indexOf ('\\react\\') > -1) || (k.indexOf ('/react/') > -1)) {
+          if (k.indexOf (sep + 'react' + sep) > -1) {
             delete require.cache[k];
           }
         });

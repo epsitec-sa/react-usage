@@ -24,11 +24,12 @@
     "babel-preset-es2015": "^6.0.15",
     "babel-preset-react": "^6.0.15",
     "jsdom": "^7.0.2",
-    "mai-chai": "0.x",
+    "mai-chai": "^1.0.2",
     "mocha": "^2.3.3",
     "path": "^0.12.7",
     "react": "^0.14.2",
     "react-addons-test-utils": "^0.14.2",
-    "react-dom": "^0.14.2"
+    "react-dom": "^0.14.2",
+    "react-element-to-jsx-string": "^2.1.2"
   }
 }

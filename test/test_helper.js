@@ -5,14 +5,14 @@
 
 import jsdom from 'jsdom';
 
-var doc = jsdom.jsdom ('<!doctype html><html><body><div id="root"/></body></html>');
-var win = doc.defaultView;
+const doc = jsdom.jsdom ('<!doctype html><html><body><div id="root"/></body></html>');
+const win = doc.defaultView;
 
 /* global global */
 global.document = doc;
-global.window = win;
+global.window   = win;
 
-Object.keys (win).forEach ((key) => {
+Object.keys (win).forEach (key => {
   if (!(key in global)) {
     global[key] = win[key];
   }

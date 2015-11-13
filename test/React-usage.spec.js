@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 
 import Hello from './components/stateless/Hello.js';
 import Title from './components/Title.js';
+import reactElementToJSXString from 'react-element-to-jsx-string';
 
 
 describe ('React', () => {
@@ -17,6 +18,8 @@ describe ('React', () => {
       expect (domElement.props).to.have.property ('id', 'x');
       expect (domElement).to.have.property ('key', null);
       expect (domElement).to.have.property ('ref', null);
+      expect (domElement).to.equalJSX (<div id='x'/>);
+      expect (reactElementToJSXString (domElement)).to.equal ('<div id="x" />');
     });
 
     it ('contains type/id/key/ref properties for Component element', () => {
@@ -25,6 +28,8 @@ describe ('React', () => {
       expect (compElement.props).to.have.property ('id', 'x');
       expect (compElement).to.have.property ('key', null);
       expect (compElement).to.have.property ('ref', null);
+      expect (compElement).to.equalJSX (<Title id='x'/>);
+      expect (reactElementToJSXString (compElement)).to.equal ('<Title id="x" />');
     });
 
     it ('contains type/id/key/ref properties for stateless Component element', () => {
@@ -33,6 +38,8 @@ describe ('React', () => {
       expect (compElement.props).to.have.property ('id', 'x');
       expect (compElement).to.have.property ('key', null);
       expect (compElement).to.have.property ('ref', null);
+      expect (compElement).to.equalJSX (<Hello id='x'/>);
+      expect (reactElementToJSXString (compElement)).to.equal ('<Hello id="x" />');
     });
 
     describe ('isValidElement()', () => {

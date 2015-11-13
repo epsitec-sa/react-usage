@@ -17,6 +17,9 @@ module.exports = function (wallaby) {
         presets: [
           'es2015',
           'react'
+        ],
+        plugins: [
+          'transform-react-display-name'
         ]
       })
     },

@@ -26,10 +26,10 @@ describe ('ReactDOM', () => {
     });
     it ('returns component for statefull component', () => {
       const mountNode = document.getElementById ('root');
-      const component = ReactDOM.render (<Title id='x' text='Welcome'/>, mountNode);
+      const component = ReactDOM.render (<Title id='x' text='Hello'/>, mountNode);
       expect (component).to.exist ();
       expect (component.props).to.have.property ('id', 'x');
-      expect (component.props).to.have.property ('text', 'Welcome');
+      expect (component.props).to.have.property ('text', 'Hello');
     });
     it ('returns component that can be accessed, for statefull component', () => {
       const mountNode = document.getElementById ('root');
@@ -72,7 +72,7 @@ describe ('ReactDOM', () => {
       const mountNode = document.getElementById ('root');
       const componentA = ReactDOM.render (<Title id='x' text='Welcome'/>, mountNode);
       ReactDOM.unmountComponentAtNode (mountNode);
-      const componentB = ReactDOM.render (<Title id='y' text='Bonjour'/>, mountNode);
+      const componentB = ReactDOM.render (<Title id='y' text='Welcome'/>, mountNode);
       expect (componentA === componentB).to.be.false ();
     });
   });

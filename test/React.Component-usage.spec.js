@@ -34,11 +34,30 @@ describe ('React.Component', () => {
       expect (mountNode.children[0]).to.have.property ('id', '2');
     });
   });
+
   describe ('name', () => {
     it ('matches name of class', () => {
       const mountNode = document.getElementById ('root');
       const component = ReactDOM.render (<Component/>, mountNode);
       expect (component.constructor.name).to.equal ('Component');
+    });
+  });
+
+  // See http://babeljs.io/docs/plugins/transform-react-display-name/
+  describe ('displayName', () => {
+    it ('gets added by Babel plugin on React.createClass', () => {
+      const Foo = React.createClass ({
+        render: function () {
+          return <div/>;
+        }
+      });
+
+      expect (Foo.displayName).to.equal ('Foo');
+
+      const mountNode = document.getElementById ('root');
+      const component = ReactDOM.render (<Foo/>, mountNode);
+
+      expect (component.constructor.displayName).to.equal ('Foo');
     });
   });
 
@@ -71,6 +90,7 @@ describe ('React.Component', () => {
         expect (component.props).to.have.property ('id', 'default');
       });
     });
+
     describe ('using class Foo extends React.Component', () => {
       it ('initializes state and props with constructor', () => {
         class Foo extends React.Component {
@@ -91,6 +111,7 @@ describe ('React.Component', () => {
         expect (component.state).to.have.property ('counter', 0);
         expect (component.props).to.have.property ('id', 'default');
       });
+
       it ('warns if properties don\'t match the expected type', () => {
         class Foo extends React.Component {
           render () {
@@ -107,7 +128,7 @@ describe ('React.Component', () => {
     });
   });
 
-  describe ('Lifecycle Methods', () => {
+  describe ('lifecycle methods', () => {
     var actions = '';
 
     class Foo extends React.Component {
@@ -122,7 +143,6 @@ describe ('React.Component', () => {
         actions += 'did-mount/';
       }
       componentWillReceiveProps (nextProps) {
-        console.log (nextProps.name);
         actions += `will-rcv-props:${nextProps.name}/`;
       }
       shouldComponentUpdate (nextProps, nextState) {
@@ -151,6 +171,7 @@ describe ('React.Component', () => {
       expect (actions).to.equal ('will-mount/render/did-mount/');
       ReactDOM.unmountComponentAtNode (mountNode);
     });
+
     it ('component.SetState calls componentShouldUpdate/WillUpdate/render/DidUpdate()', () => {
       const mountNode = document.getElementById ('root');
       const component = ReactDOM.render (<Foo name='foo'/>, mountNode);
@@ -165,6 +186,7 @@ describe ('React.Component', () => {
       expect (actions).to.equal ('will-unmount/');
       ReactDOM.unmountComponentAtNode (mountNode);
     });
+
     it ('ReactDOM.render/2 calls componentWillReceiveProps/ShouldUpdate/WillUpdate/render/DidUpdate()', () => {
       const mountNode = document.getElementById ('root');
       ReactDOM.render (<Foo name='foo'/>, mountNode);
@@ -176,6 +198,7 @@ describe ('React.Component', () => {
       expect (actions).to.equal ('will-unmount/');
       ReactDOM.unmountComponentAtNode (mountNode);
     });
+
     it ('ReactDOM.unmountComponentAtNode calls componentWillUnmount()', () => {
       const mountNode = document.getElementById ('root');
       ReactDOM.render (<Foo name='foo'/>, mountNode);

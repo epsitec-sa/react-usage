@@ -5,11 +5,11 @@ var babel = require ('babel-core');
 module.exports = function (wallaby) {
   return {
     files: [
-      {pattern: 'test/test_helper.js'},
+      {pattern: 'test/test-helper.js'},
       {pattern: 'src/components/**/*.js'}
     ],
     tests: [
-      {pattern: 'src/test/**/*.spec.js'},
+      {pattern: 'src/test/**/*.js'},
     ],
     compilers: {
       '**/*.js*': wallaby.compilers.babel ({
@@ -47,7 +47,7 @@ module.exports = function (wallaby) {
 
       // Include the test helper, which sets up the document and window objects
       // as globals:
-      require ('./test/test_helper');
+      require ('./test/test-helper');
     },
     teardown: function () {
       console.log ('Teardown wallaby');

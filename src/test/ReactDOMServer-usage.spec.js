@@ -5,7 +5,7 @@ import {expect} from 'mai-chai';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import Hello from './components/stateless/Hello.js';
+import Hello from '../components/stateless/Hello.js';
 
 describe ('ReactDOMServer', () => {
   describe ('renderToString()', () => {

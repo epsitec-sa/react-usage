@@ -6,9 +6,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
 
-import CheckboxWithLabel from './components/CheckboxWithLabel.js';
-import Hello from './components/stateless/Hello.js';
-import Title from './components/Title.js';
+import CheckboxWithLabel from '../components/CheckboxWithLabel.js';
+import Hello from '../components/stateless/Hello.js';
+import Title from '../components/Title.js';
 
 const {createRenderer, isElement, isElementOfType, isDOMComponent,
   renderIntoDocument, findRenderedDOMComponentWithTag, Simulate} = ReactTestUtils;

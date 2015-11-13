@@ -5,8 +5,8 @@ import {expect} from 'mai-chai';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Hello from './components/stateless/Hello.js';
-import Title from './components/Title.js';
+import Hello from '../components/stateless/Hello.js';
+import Title from '../components/Title.js';
 import reactElementToJSXString from 'react-element-to-jsx-string';
 
 

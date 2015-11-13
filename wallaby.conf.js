@@ -6,10 +6,10 @@ module.exports = function (wallaby) {
   return {
     files: [
       {pattern: 'test/test_helper.js'},
-      {pattern: 'test/components/**/*.js'}
+      {pattern: 'src/components/**/*.js'}
     ],
     tests: [
-      {pattern: 'test/**/*.spec.js'},
+      {pattern: 'src/test/**/*.spec.js'},
     ],
     compilers: {
       '**/*.js*': wallaby.compilers.babel ({

@@ -13,15 +13,6 @@
   "author": "Epsitec SA",
   "license": "MIT",
   "homepage": "https://github.com/epsitec-sa/react-usage",
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ],
-    "plugins": [
-      "transform-react-display-name"
-    ]
-  },
   "devDependencies": {
     "babel-core": "^6.1.20",
     "babel-plugin-transform-react-display-name": "^6.1.18",

@@ -25,6 +25,7 @@
     "mocha": "^2.3.3",
     "path": "^0.12.7",
     "react": "^0.14.2",
+    "react-addons-shallow-compare": "^0.14.2",
     "react-addons-test-utils": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-element-to-jsx-string": "^2.1.2"

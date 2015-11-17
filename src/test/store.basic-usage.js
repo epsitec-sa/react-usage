@@ -2,90 +2,10 @@
 
 import {expect} from 'mai-chai';
 
+import Node from '../store/node.js';
+import Store from '../store/store.js';
+
 // import React from 'react';
-
-class Node {
-  constructor (id, generation) {
-    if ((typeof id === 'string') &&
-        (id.length > 0)) {
-      this._id = id;
-      this._generation = generation || 0;
-    } else {
-      throw new Error ('Node expects a valid id');
-    }
-  }
-
-  get id () {
-    return this._id;
-  }
-
-  get generation () {
-    return this._generation;
-  }
-
-  getParentId () {
-    const pos = this._id.lastIndexOf ('.');
-    if (pos < 0) {
-      return null;
-    } else {
-      return this._id.substring (0, pos);
-    }
-  }
-
-  static withGeneration (node, generation) {
-    return new Node (node._id, generation);
-  }
-}
-
-class Store {
-  constructor () {
-    this.nodes = {};
-    this.generation = 0;
-  }
-
-  setNode (node) {
-    const currentNode = this.nodes[node.id];
-    if (currentNode === node) {
-      //  Happy path: nothing changed
-      return;
-    }
-
-    this.generation++;
-    this.nodes[node.id] = Node.withGeneration (node, this.generation);
-
-    let parentId = node.getParentId ();
-
-    console.log (parentId);
-
-    while (parentId) {
-      if (this.nodes[parentId]) {
-        this.nodes[parentId] = Node.withGeneration (this.nodes[parentId], this.generation);
-      } else {
-        this.nodes[parentId] = new Node (parentId, this.generation);
-      }
-      parentId = this.nodes[parentId].getParentId ();
-    }
-
-    return this.nodes[node.id];
-  }
-
-  getNode (id) {
-    return this.nodes[id];
-  }
-
-  getGeneration () {
-    return this.generation;
-  }
-
-  getNodeCount () {
-    return Object.keys (this.nodes).length;
-  }
-
-  static create () {
-    return new Store ();
-  }
-}
-
 
 describe ('Node', () => {
   describe ('new Node()', () => {

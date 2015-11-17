@@ -42,7 +42,7 @@ class Store {
 /* private methods */
 
   updateTree (node, mutation) {
-    const parentId = node.getParentId ();
+    const parentId = Node.getParentId (node.id);
     if (parentId) {
       const parentNode = this.getNode (parentId) || new Node (parentId);
       this.updateTree (parentNode, mutation);

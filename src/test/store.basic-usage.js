@@ -25,18 +25,15 @@ describe ('Node', () => {
 
   describe ('getParentId()', () => {
     it ('returns null if there is no parent (id="a")', () => {
-      const node = new Node ('a');
-      expect (node.getParentId ()).to.be.null ();
+      expect (Node.getParentId ('a')).to.be.null ();
     });
 
     it ('returns empty name for id=".a"', () => {
-      const node = new Node ('.a');
-      expect (node.getParentId ()).to.equal ('');
+      expect (Node.getParentId ('.a')).to.equal ('');
     });
 
     it ('returns parent name for id="a.b.c"', () => {
-      const node = new Node ('a.b.c');
-      expect (node.getParentId ()).to.equal ('a.b');
+      expect (Node.getParentId ('a.b.c')).to.equal ('a.b');
     });
   });
 

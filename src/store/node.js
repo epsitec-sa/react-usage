@@ -2,14 +2,12 @@
 
 class Node {
   constructor (id, store, generation) {
-    if ((typeof id === 'string') &&
-        (id.length > 0)) {
-      this._id = id;
-      this._store = store;
-      this._generation = generation || 0;
-    } else {
+    if ((typeof id !== 'string') || (id.length === 0)) {
       throw new Error ('Node expects a valid id');
     }
+    this._id = id;
+    this._store = store;
+    this._generation = generation || 0;
   }
 
   get id () {
@@ -24,12 +22,12 @@ class Node {
     return this._generation;
   }
 
-  getParentId () {
-    const pos = this._id.lastIndexOf ('.');
+  static getParentId (id) {
+    const pos = id.lastIndexOf ('.');
     if (pos < 0) {
       return null;
     } else {
-      return this._id.substring (0, pos);
+      return id.substring (0, pos);
     }
   }
 

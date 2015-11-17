@@ -10,7 +10,7 @@ function pureRenderDecorator (component) {
   };
 }
 
-export class Hello extends React.Component {
+export default class Hello extends React.Component {
   render () {
     Hello.incCounter ();
     const {id} = this.props.s || {};

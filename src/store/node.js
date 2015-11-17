@@ -1,10 +1,11 @@
 'use strict';
 
 class Node {
-  constructor (id, generation) {
+  constructor (id, store, generation) {
     if ((typeof id === 'string') &&
         (id.length > 0)) {
       this._id = id;
+      this._store = store;
       this._generation = generation || 0;
     } else {
       throw new Error ('Node expects a valid id');
@@ -13,6 +14,10 @@ class Node {
 
   get id () {
     return this._id;
+  }
+
+  get store () {
+    return this._store;
   }
 
   get generation () {
@@ -28,8 +33,15 @@ class Node {
     }
   }
 
-  static withGeneration (node, generation) {
-    return new Node (node._id, generation);
+  static with (node, mutation) {
+    const generation = mutation.generation || node.generation;
+    const store = mutation.store || node.store;
+    if ((node.generation === generation) &&
+        (node.store === store)) {
+      return node;
+    } else {
+      return new Node (node._id, store, generation);
+    }
   }
 }
 

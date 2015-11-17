@@ -4,45 +4,58 @@ import Node from './node.js';
 
 class Store {
   constructor () {
-    this.nodes = {};
-    this.generation = 0;
+    this._nodes = {};
+    this._generation = 0;
   }
 
   setNode (node) {
-    const currentNode = this.nodes[node.id];
-    if (currentNode === node) {
-      //  Happy path: nothing changed
-      return;
+    if (typeof node === 'string') {
+      node = new Node (node);
+    }
+    if (!node || !node.id || !(node instanceof Node)) {
+      throw new Error ('Invalid node');
     }
 
-    this.generation++;
-    this.nodes[node.id] = Node.withGeneration (node, this.generation);
-
-    let parentId = node.getParentId ();
-
-    while (parentId) {
-      if (this.nodes[parentId]) {
-        this.nodes[parentId] = Node.withGeneration (this.nodes[parentId], this.generation);
-      } else {
-        this.nodes[parentId] = new Node (parentId, this.generation);
-      }
-      parentId = this.nodes[parentId].getParentId ();
+    if (node === this.getNode (node.id)) { // No mutation
+      return node;
+    } else {
+      return this.updateTree (node, {store: this, generation: this.changeGeneration ()});
     }
-
-    return this.nodes[node.id];
   }
 
   getNode (id) {
-    return this.nodes[id];
+    return this._nodes[id];
   }
 
-  getGeneration () {
-    return this.generation;
+  changeGeneration () {
+    return ++this._generation;
   }
 
-  getNodeCount () {
-    return Object.keys (this.nodes).length;
+  get generation () {
+    return this._generation;
   }
+
+  get nodeCount () {
+    return Object.keys (this._nodes).length;
+  }
+
+/* private methods */
+
+  updateTree (node, mutation) {
+    const parentId = node.getParentId ();
+    if (parentId) {
+      const parentNode = this.getNode (parentId) || new Node (parentId);
+      this.updateTree (parentNode, mutation);
+    }
+    return this.patchNode (Node.with (node, mutation));
+  }
+
+  patchNode (node) {
+    this._nodes[node.id] = node;
+    return node;
+  }
+
+/* static methods */
 
   static create () {
     return new Store ();

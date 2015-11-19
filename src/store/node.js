@@ -36,7 +36,11 @@ class Node {
   }
 
   getChild (id) {
-    return this._store.getNode (Node.join (this._id, id));
+    if (this._id.length === 0) {
+      return this._store.getNode (id);
+    } else {
+      return this._store.getNode (Node.join (this._id, id));
+    }
   }
 
   static join (ids) {
@@ -74,21 +78,25 @@ class Node {
     if (arguments.length % 2 !== 1) {
       throw new Error ('Invalid number of arguments');
     }
-    const copy = {};
-    Object.assign (copy, this._values);
-    let changes = 0;
+
+    var values;
+
     for (let i = 1; i < arguments.length; i += 2) {
       const id = arguments[i + 0];
       const value = arguments[i + 1];
-      if (copy[id] !== value) {
-        copy[id] = value;
-        changes++;
+      if (node._values[id] !== value) {
+        if (!values) {
+          values = {};
+          Object.assign (values, node._values);
+        }
+        values[id] = value;
       }
     }
-    if (changes === 0) {
+
+    if (!values) {
       return node;
     } else {
-      return Node.with (node, {values: copy});
+      return Node.with (node, {values: values});
     }
   }
 

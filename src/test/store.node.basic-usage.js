@@ -94,9 +94,20 @@ describe ('Node', () => {
     it ('works with multiple values', () => {
       const node1 = new Node ('a');
       const node2 = Node.withValues (node1, 'x', 1, 'y', 2);
+      const node3 = Node.withValues (node2, 'x', 1, 'y', 2);
       expect (node1).to.not.equal (node2);
       expect (node2.getValue ('x')).to.equal (1);
       expect (node2.getValue ('y')).to.equal (2);
+      expect (node2).to.equal (node3);
+    });
+
+    it ('updates values and keeps previous unchanged', () => {
+      const node1 = new Node ('a');
+      const node2 = Node.withValues (node1, 'x', 1, 'y', 2);
+      const node3 = Node.withValues (node2, 'y', 0, 'z', 3);
+      expect (node3.getValue ('x')).to.equal (1);
+      expect (node3.getValue ('y')).to.equal (0);
+      expect (node3.getValue ('z')).to.equal (3);
     });
 
     it ('throws on wrong argument count', () => {

@@ -185,5 +185,31 @@ describe ('Store', () => {
         expect (store.findNode ('a.b.c')).to.exist ();
       });
     });
+
+    describe ('node.getChild()', () => {
+      it ('creates missing child node', () => {
+        const store = Store.create ();
+        const node1 = store.getNode ('a');
+        const node2 = node1.getChild ('b');
+        expect (store.findNode ('a')).to.exist ();
+        expect (store.findNode ('a.b')).to.exist ();
+        expect (store.findNode ('a')).to.not.equal (node1);
+        expect (store.findNode ('a.b')).to.equal (node2);
+      });
+
+      it ('returns existing child node', () => {
+        const store = Store.create ();
+        const node1 = store.getNode ('a.b');
+        const node2 = store.getNode ('a');
+        expect (node2.getChild ('b')).to.equal (node1);
+      });
+
+      it ('works from root node', () => {
+        const store = Store.create ();
+        expect (store.root).to.exist ();
+        expect (store.root.getChild ('a')).to.exist ();
+        expect (store.findNode ('a')).to.exist ();
+      });
+    });
   });
 });

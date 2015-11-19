@@ -15,6 +15,15 @@ describe ('Store', () => {
         expect (store.nodeCount).to.equal (0);
         expect (store.generation).to.equal (0);
       });
+
+      it ('creates a store with an empty root node', () => {
+        const store = Store.create ();
+        expect (store.root).to.exist ();
+        expect (store.root.store).to.equal (store);
+        expect (store.root.id).to.equal ('');
+        expect (store.root).to.equal (store.getNode (''));
+        expect (store.root).to.equal (store.findNode (''));
+      });
     });
 
     describe ('Store.setNode()', () => {
@@ -139,6 +148,41 @@ describe ('Store', () => {
         expect (nodeA2.generation).to.equal (1);
         expect (nodeA3.generation).to.equal (2);
         expect (nodeA4.generation).to.equal (3);
+      });
+    });
+
+    describe ('findNode()', () => {
+      it ('throws for invalid node ids', () => {
+        const store = Store.create ();
+        expect (() => store.findNode ()).to.throw (Error);
+        expect (() => store.findNode (1)).to.throw (Error);
+      });
+
+      it ('returns undefined for missing nodes', () => {
+        const store = Store.create ();
+        expect (store.findNode ('x')).to.be.undefined ();
+      });
+    });
+
+    describe ('getNode()', () => {
+      it ('throws for invalid node ids', () => {
+        const store = Store.create ();
+        expect (() => store.getNode ()).to.throw (Error);
+        expect (() => store.getNode (1)).to.throw (Error);
+      });
+
+      it ('creates missing node', () => {
+        const store = Store.create ();
+        expect (store.getNode ('x')).to.exist ();
+        expect (store.findNode ('x')).to.exist ();
+      });
+
+      it ('creates missing nodes up to root', () => {
+        const store = Store.create ();
+        expect (store.getNode ('a.b.c')).to.exist ();
+        expect (store.findNode ('a')).to.exist ();
+        expect (store.findNode ('a.b')).to.exist ();
+        expect (store.findNode ('a.b.c')).to.exist ();
       });
     });
   });

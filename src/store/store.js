@@ -6,6 +6,7 @@ class Store {
   constructor () {
     this._nodes = {};
     this._generation = 0;
+    this._rootNode = new Node ('', this);
   }
 
   getNode (id) {
@@ -28,11 +29,22 @@ class Store {
   }
 
   findNode (id) {
-    return this._nodes[id];
+    if (typeof id !== 'string') {
+      throw new Error ('Invalid node id');
+    }
+    if (id.length === 0) {
+      return this._rootNode;
+    } else {
+      return this._nodes[id];
+    }
   }
 
   get generation () {
     return this._generation;
+  }
+
+  get root () {
+    return this._rootNode;
   }
 
   get nodeCount () {

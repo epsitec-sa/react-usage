@@ -1,14 +1,18 @@
 'use strict';
 
+const emptyValues = {};
+
 class Node {
   constructor (id, store, generation, values) {
-    if ((typeof id !== 'string') || (id.length === 0)) {
+    if ((typeof id !== 'string') ||
+        (!store && (id.length === 0)) ||
+        (store && store._rootNode && (id.length === 0))) {
       throw new Error ('Node expects a valid id');
     }
     this._id = id;
     this._store = store;
     this._generation = generation || 0;
-    this._values = values || {};
+    this._values = values || emptyValues;
   }
 
   get id () {
@@ -21,6 +25,10 @@ class Node {
 
   get generation () {
     return this._generation;
+  }
+
+  get value () {
+    return this.getValue ('');
   }
 
   getValue (id) {

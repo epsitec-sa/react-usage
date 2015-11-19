@@ -44,13 +44,23 @@ class Node {
   }
 
   static join (ids) {
+    let args;
     if (Array.isArray (ids)) {
-      return ids.join ('.');
+      args = ids;
+    } else {
+      args = new Array (arguments.length);
+      for (let i = 0; i < args.length; ++i) {
+        args[i] = arguments[i];
+      }
     }
-    const args = new Array (arguments.length);
-    for (var i = 0; i < args.length; ++i) {
-      args[i] = arguments[i];
+
+    for (let i = 0; i < args.length; ++i) {
+      const arg = args[i];
+      if ((typeof arg !== 'string') || arg.length === 0) {
+        throw new Error ('Node.join expects non-empty string ids');
+      }
     }
+
     return args.join ('.');
   }
 

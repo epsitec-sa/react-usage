@@ -121,11 +121,17 @@ class Node {
       return node;
     } else {
       node = new Node (node._id, store, generation, values);
-      if (!mutation.store && node._store) {
-        return node._store.setNode (node);
-      } else {
-        return node;
+      // If the node was already attached to a store, we have to update the
+      // store so that the new node will be used from now on...
+      if (node._store) {
+        // ...however, if the mutation includes a store specification, then
+        // this means that the store is actually calling us, because it is
+        // already updating this very node. If so, don't notify the store.
+        if (!mutation.store) {
+          return node._store.setNode (node);
+        }
       }
+      return node;
     }
   }
 }

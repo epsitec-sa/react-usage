@@ -2,6 +2,28 @@
 
 import Node from './node.js';
 
+/******************************************************************************/
+
+function patchNode (store, node) {
+  store._nodes[node.id] = node;
+  return node;
+}
+
+function changeGeneration (store) {
+  return ++store._generation;
+}
+
+function updateTree (store, node, mutation) {
+  const parentId = Node.getParentId (node.id);
+  if (parentId) {
+    const parentNode = store.findNode (parentId) || new Node (parentId);
+    updateTree (store, parentNode, mutation);
+  }
+  return patchNode (store, Node.with (node, mutation));
+}
+
+/******************************************************************************/
+
 class Store {
   constructor () {
     this._nodes = {};
@@ -24,7 +46,11 @@ class Store {
     if (node === this.findNode (node.id)) { // No mutation
       return node;
     } else {
-      return this.updateTree (node, {store: this, generation: this.changeGeneration ()});
+      const mutation = {
+        store: this,
+        generation: changeGeneration (this)
+      };
+      return updateTree (this, node, mutation);
     }
   }
 
@@ -49,26 +75,6 @@ class Store {
 
   get nodeCount () {
     return Object.keys (this._nodes).length;
-  }
-
-/* private methods */
-
-  changeGeneration () {
-    return ++this._generation;
-  }
-
-  updateTree (node, mutation) {
-    const parentId = Node.getParentId (node.id);
-    if (parentId) {
-      const parentNode = this.findNode (parentId) || new Node (parentId);
-      this.updateTree (parentNode, mutation);
-    }
-    return this.patchNode (Node.with (node, mutation));
-  }
-
-  patchNode (node) {
-    this._nodes[node.id] = node;
-    return node;
   }
 
 /* static methods */

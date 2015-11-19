@@ -2,8 +2,9 @@
 
 import {expect} from 'mai-chai';
 
-// import Node from '../store/node.js';
+import Node from '../store/node.js';
 import Store from '../store/store.js';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
@@ -58,11 +59,8 @@ describe ('Store React binding', () => {
   describe ('Store.link()', () => {
     it ('propagates nodes and values through component tree', () => {
       const store = Store.create ();
-      const contentNode = store.getNode ('post.content')
-        .setValue ('text', 'X');
-      const authorNode = store.getNode ('post.author')
-        .setValue ('imageUrl', 'http://ima.ge/x.png')
-        .setValue ('displayName', 'John Doe');
+      const contentNode = Node.withValue (store.getNode ('post.content'), 'text', 'X');
+      const authorNode = Node.withValues (store.getNode ('post.author'), 'imageUrl', 'http://ima.ge/x.png', 'displayName', 'John Doe');
       const postNode = store.getNode ('post');
 
       expect (contentNode.getValue ('text')).to.equal ('X');
@@ -83,12 +81,8 @@ describe ('Store React binding', () => {
     it ('works well with render() and shouldComponentUpdate()', () => {
       const store = Store.create ();
 
-      store.getNode ('post.content')
-        .setValue ('text', 'X');
-
-      store.getNode ('post.author')
-        .setValue ('imageUrl', 'http://ima.ge/x.png')
-        .setValue ('displayName', 'John Doe');
+      Node.with (store.getNode ('post.content'), {values: {text: 'X'}});
+      Node.with (store.getNode ('post.author'), {values: {imageUrl: 'http://ima.ge/x.png', displayName: 'John Doe'}});
 
       const mountNode = document.getElementById ('root');
 
@@ -98,17 +92,17 @@ describe ('Store React binding', () => {
 
       log = '';
       ReactDOM.render (<Post node={store.findNode ('post')} />, mountNode);
-      expect (log).to.equal ('|5>5=false');
+      expect (log).to.equal ('|4>4=false');
 
       log = '';
-      store.findNode ('post.content').setValue ('text', 'Y');
+      Node.withValue (store.findNode ('post.content'), 'text', 'Y');
       ReactDOM.render (<Post node={store.findNode ('post')} />, mountNode);
-      expect (log).to.equal ('|5>6=true/Post|2>6=true/Content|5>5=false');
+      expect (log).to.equal ('|4>5=true/Post|2>5=true/Content|4>4=false');
 
       log = '';
-      store.findNode ('post.author').setValue ('displayName', 'John');
+      Node.withValue (store.findNode ('post.author'), 'displayName', 'John');
       ReactDOM.render (<Post node={store.findNode ('post')} />, mountNode);
-      expect (log).to.equal ('|6>7=true/Post|6>6=false|5>7=true/Author');
+      expect (log).to.equal ('|5>6=true/Post|5>5=false|4>6=true/Author');
     });
   });
 });

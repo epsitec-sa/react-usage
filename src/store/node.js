@@ -35,26 +35,6 @@ class Node {
     return this._values[id];
   }
 
-  setValue (id, value) {
-    if (this._values[id] === value) {
-      return this;
-    } else {
-      const node = Node.with (this, this.getValueMutation (id, value));
-      if (this._store) {
-        return this._store.setNode (node);
-      } else {
-        return node;
-      }
-    }
-  }
-
-  getValueMutation (id, value) {
-    const copy = {};
-    Object.assign (copy, this._values);
-    copy[id] = value;
-    return {values: copy};
-  }
-
   getChild (id) {
     return this._store.getNode (Node.join (this._id, id));
   }
@@ -79,16 +59,55 @@ class Node {
     }
   }
 
+  static withValue (node, id, value) {
+    if (node._values[id] === value) {
+      return node;
+    } else {
+      return Node.withValues (node, id, value);
+    }
+  }
+
+  static withValues (node) {
+    if (arguments.length === 1) {
+      return node;
+    }
+    if (arguments.length % 2 !== 1) {
+      throw new Error ('Invalid number of arguments');
+    }
+    const copy = {};
+    Object.assign (copy, this._values);
+    let changes = 0;
+    for (let i = 1; i < arguments.length; i += 2) {
+      const id = arguments[i + 0];
+      const value = arguments[i + 1];
+      if (copy[id] !== value) {
+        copy[id] = value;
+        changes++;
+      }
+    }
+    if (changes === 0) {
+      return node;
+    } else {
+      return Node.with (node, {values: copy});
+    }
+  }
+
   static with (node, mutation) {
     const generation = mutation.generation || node._generation;
     const store = mutation.store || node._store;
     const values = mutation.values || node._values;
+
     if ((node._generation === generation) &&
         (node._store === store) &&
         (node._values === values)) {
       return node;
     } else {
-      return new Node (node._id, store, generation, values);
+      node = new Node (node._id, store, generation, values);
+      if (!mutation.store && node._store) {
+        return node._store.setNode (node);
+      } else {
+        return node;
+      }
     }
   }
 }

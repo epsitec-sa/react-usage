@@ -98,5 +98,11 @@ describe ('Node', () => {
       expect (node2.getValue ('x')).to.equal (1);
       expect (node2.getValue ('y')).to.equal (2);
     });
+
+    it ('throws on wrong argument count', () => {
+      const node1 = new Node ('a');
+      expect (() => Node.withValues (node1, 'x')).to.throw (Error);
+      expect (() => Node.withValues (node1, 'x', 1, 'y')).to.throw (Error);
+    });
   });
 });

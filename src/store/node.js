@@ -24,8 +24,6 @@ class Node {
   }
 
   getValue (id) {
-    console.log (id);
-    console.log (this._values[id]);
     return this._values[id];
   }
 
@@ -33,10 +31,7 @@ class Node {
     if (this._values[id] === value) {
       return this;
     } else {
-      const mutation = {values: {...this._values} };
-      mutation.values[id] = value;
-      console.log (mutation);
-      const node = Node.with (this, mutation);
+      const node = Node.with (this, this.getValueMutation (id, value));
       if (this._store) {
         return this._store.setNode (node);
       } else {
@@ -45,16 +40,26 @@ class Node {
     }
   }
 
-  getChild (id) {
-    return this._store.getNode (Node.getChildId (this._id, id));
+  getValueMutation (id, value) {
+    const copy = {};
+    Object.assign (copy, this._values);
+    copy[id] = value;
+    return {values: copy};
   }
 
-  static getChildId (parentId, id) {
-    if (parentId) {
-      return parentId + '.' + id;
-    } else {
-      return id;
+  getChild (id) {
+    return this._store.getNode (Node.join (this._id, id));
+  }
+
+  static join (ids) {
+    if (Array.isArray (ids)) {
+      return ids.join ('.');
     }
+    const args = new Array (arguments.length);
+    for (var i = 0; i < args.length; ++i) {
+      args[i] = arguments[i];
+    }
+    return args.join ('.');
   }
 
   static getParentId (id) {

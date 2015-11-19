@@ -1,6 +1,7 @@
 'use strict';
 
 import Node from './node.js';
+import Activities from './activities.js';
 
 /******************************************************************************/
 
@@ -93,6 +94,10 @@ class Store {
   static read (props, id) {
     const {node} = props;
     return node.getValue (id);
+  }
+
+  static activity (id) {
+    return Activities.get (id);
   }
 }
 

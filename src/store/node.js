@@ -1,18 +1,29 @@
 'use strict';
 
 const emptyValues = {};
+const secretKey = {};
 
 class Node {
-  constructor (id, store, generation, values) {
+  constructor (key, id, store, generation, values) {
+    if (key !== secretKey) {
+      throw new Error ('Do not call Node constructor directly; use Node.create instead');
+    }
     if ((typeof id !== 'string') ||
         (!store && (id.length === 0)) ||
         (store && store._rootNode && (id.length === 0))) {
       throw new Error ('Node expects a valid id');
     }
+    if (typeof generation !== 'number') {
+      throw new Error ('Node expects a valid generation');
+    }
+    if (typeof values !== 'object') {
+      throw new Error ('Node expects valid initial values');
+    }
+
     this._id = id;
     this._store = store;
-    this._generation = generation || 0;
-    this._values = values || emptyValues;
+    this._generation = generation;
+    this._values = values;
   }
 
   get id () {
@@ -41,6 +52,14 @@ class Node {
     } else {
       return this._store.getNode (Node.join (this._id, id));
     }
+  }
+
+  static create (id) {
+    return new Node (secretKey, id, null, 0, emptyValues);
+  }
+
+  static createRootNode (store, values) {
+    return new Node (secretKey, '', store, 0, values || emptyValues);
   }
 
   static join (ids) {
@@ -123,7 +142,7 @@ class Node {
         (node._values === values)) {
       return node;
     } else {
-      node = new Node (node._id, store, generation, values);
+      node = new Node (secretKey, node._id, store, generation, values);
       // If the node was already attached to a store, we have to update the
       // store so that the new node will be used from now on...
       if (node._store) {

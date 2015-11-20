@@ -16,7 +16,7 @@ function changeGeneration (store) {
 function updateTree (store, node, mutation) {
   const parentId = Node.getParentId (node.id);
   if (parentId) {
-    const parentNode = store.findNode (parentId) || new Node (parentId);
+    const parentNode = store.findNode (parentId) || Node.create (parentId);
     updateTree (store, parentNode, mutation);
   }
   return patchNode (store, Node.with (node, mutation));
@@ -35,17 +35,17 @@ class Store {
 
     this._nodes = {};
     this._generation = 0;
-    this._rootNode = new Node ('', this, 0, values);
+    this._rootNode = Node.createRootNode (this, values);
     this._id = id;
   }
 
   getNode (id) {
-    return this.findNode (id) || this.setNode (new Node (id));
+    return this.findNode (id) || this.setNode (Node.create (id));
   }
 
   setNode (node) {
     if (typeof node === 'string') {
-      node = new Node (node);
+      node = Node.create (node);
     }
     if (!node || !node.id || !(node instanceof Node)) {
       throw new Error ('Invalid node');

@@ -43,7 +43,7 @@ describe ('Store', () => {
     describe ('Store.setNode()', () => {
       it ('stores node and changes the generation', () => {
         const store = Store.create ();
-        const node1 = new Node ('a');
+        const node1 = Node.create ('a');
         const node2 = store.setNode (node1);
         expect (store.nodeCount).to.equal (1);
         expect (store.generation).to.equal (1);
@@ -69,7 +69,7 @@ describe ('Store', () => {
 
       it ('returns node as stored', () => {
         const store = Store.create ();
-        const node1 = new Node ('a');
+        const node1 = Node.create ('a');
         const node2 = store.setNode (node1);
         expect (node1 !== node2);
         expect (node1.generation).to.equal (0);
@@ -79,7 +79,7 @@ describe ('Store', () => {
 
       it ('returns deep node as stored', () => {
         const store = Store.create ();
-        const node1 = new Node ('a.b.c');
+        const node1 = Node.create ('a.b.c');
         const node2 = store.setNode (node1);
         expect (node1 !== node2);
         expect (node1.generation).to.equal (0);
@@ -89,7 +89,7 @@ describe ('Store', () => {
 
       it ('called twice with same node is idempotent', () => {
         const store = Store.create ();
-        const node1 = new Node ('a');
+        const node1 = Node.create ('a');
         const node2 = store.setNode (node1);
         expect (store.nodeCount).to.equal (1);
         expect (store.generation).to.equal (1);
@@ -102,15 +102,15 @@ describe ('Store', () => {
 
       it ('creates missing nodes', () => {
         const store = Store.create ();
-        const node  = new Node ('a.b.c');
+        const node  = Node.create ('a.b.c');
         store.setNode (node);
         expect (store.nodeCount).to.equal (3);
       });
 
       it ('shares parent nodes', () => {
         const store = Store.create ();
-        const node1 = new Node ('a.b.c');
-        const node2 = new Node ('a.b.d');
+        const node1 = Node.create ('a.b.c');
+        const node2 = Node.create ('a.b.d');
         store.setNode (node1);
         store.setNode (node2);
         expect (store.nodeCount).to.equal (4);
@@ -118,9 +118,9 @@ describe ('Store', () => {
 
       it ('updates generation of parent nodes', () => {
         const store = Store.create ();
-        const node1 = new Node ('a');
-        const node2 = new Node ('a.b');
-        const node3 = new Node ('a.c');
+        const node1 = Node.create ('a');
+        const node2 = Node.create ('a.b');
+        const node3 = Node.create ('a.c');
         store.setNode (node1);
         expect (store.findNode ('a').generation).to.equal (1);
         expect (store.findNode ('a.b')).to.not.exist ();
@@ -135,9 +135,9 @@ describe ('Store', () => {
 
       it ('produces new parent nodes: existing nodes are not mutated, they are replaced', () => {
         const store = Store.create ();
-        const node1 = new Node ('a');
-        const node2 = new Node ('a.b');
-        const node3 = new Node ('a.c');
+        const node1 = Node.create ('a');
+        const node2 = Node.create ('a.b');
+        const node3 = Node.create ('a.c');
 
         const nodeA1 = store.setNode (node1);
         const nodeA2 = store.findNode ('a');

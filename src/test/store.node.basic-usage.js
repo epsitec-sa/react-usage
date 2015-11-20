@@ -7,21 +7,21 @@ import Node from '../store/node.js';
 describe ('Node', () => {
   describe ('new Node()', () => {
     it ('requires valid id string', () => {
-      expect (() => new Node ()).to.throw (Error);
-      expect (() => new Node (123)).to.throw (Error);
-      expect (() => new Node ('')).to.throw (Error);
-      expect (() => new Node ('a')).to.not.throw (Error);
+      expect (() => Node.create ()).to.throw (Error);
+      expect (() => Node.create (123)).to.throw (Error);
+      expect (() => Node.create ('')).to.throw (Error);
+      expect (() => Node.create ('a')).to.not.throw (Error);
     });
 
     it ('creates an empty node', () => {
-      const node = new Node ('a');
+      const node = Node.create ('a');
       expect (node.id).to.equal ('a');
       expect (node.generation).to.equal (0);
     });
   });
 
   describe ('has a default value', () => {
-    const node1 = new Node ('a');
+    const node1 = Node.create ('a');
     const node2 = Node.with (node1, {values: {'': 1}});
 
     expect (node1.value).to.be.undefined ();
@@ -45,20 +45,20 @@ describe ('Node', () => {
 
   describe ('with()', () => {
     it ('returns new instance of node on change', () => {
-      const node1 = new Node ('a', null, 10);
-      const node2 = Node.with (node1, {generation: 20});
-      expect (node1.generation).to.equal (10);
-      expect (node2.generation).to.equal (20);
+      const node1 = Node.create ('a');
+      const node2 = Node.with (node1, {generation: 1});
+      expect (node1.generation).to.equal (0);
+      expect (node2.generation).to.equal (1);
     });
 
     it ('returns same instance of node on no-op', () => {
-      const node1 = new Node ('a', null, 10);
-      const node2 = Node.with (node1, {generation: 10});
+      const node1 = Node.create ('a');
+      const node2 = Node.with (node1, {generation: 0});
       expect (node1 === node2).to.be.true ();
     });
 
     it ('returns same instance of node on empty update', () => {
-      const node1 = new Node ('a', 10);
+      const node1 = Node.create ('a', 10);
       const node2 = Node.with (node1, {});
       expect (node1 === node2);
     });
@@ -66,7 +66,7 @@ describe ('Node', () => {
 
   describe ('Node.withValue()', () => {
     it ('produces a new node when value changes', () => {
-      const node1 = new Node ('a');
+      const node1 = Node.create ('a');
       const node2 = Node.withValue (node1, 'x', 1);
       const node3 = Node.withValue (node2, 'x', 2);
       const node4 = Node.withValue (node3, 'x', 2);
@@ -86,13 +86,13 @@ describe ('Node', () => {
 
   describe ('Node.withValues()', () => {
     it ('works with no values', () => {
-      const node1 = new Node ('a');
+      const node1 = Node.create ('a');
       const node2 = Node.withValues (node1);
       expect (node1).to.equal (node2);
     });
 
     it ('works with multiple values', () => {
-      const node1 = new Node ('a');
+      const node1 = Node.create ('a');
       const node2 = Node.withValues (node1, 'x', 1, 'y', 2);
       const node3 = Node.withValues (node2, 'x', 1, 'y', 2);
       expect (node1).to.not.equal (node2);
@@ -102,7 +102,7 @@ describe ('Node', () => {
     });
 
     it ('updates values and keeps previous unchanged', () => {
-      const node1 = new Node ('a');
+      const node1 = Node.create ('a');
       const node2 = Node.withValues (node1, 'x', 1, 'y', 2);
       const node3 = Node.withValues (node2, 'y', 0, 'z', 3);
       expect (node3.getValue ('x')).to.equal (1);
@@ -111,7 +111,7 @@ describe ('Node', () => {
     });
 
     it ('throws on wrong argument count', () => {
-      const node1 = new Node ('a');
+      const node1 = Node.create ('a');
       expect (() => Node.withValues (node1, 'x')).to.throw (Error);
       expect (() => Node.withValues (node1, 'x', 1, 'y')).to.throw (Error);
     });

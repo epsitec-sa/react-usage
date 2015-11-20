@@ -18,11 +18,12 @@ class Activity {
     return activities.get (id);
   }
 
-  static create (id) {
+  static create (id, component) {
     if (activities.has (id)) {
       throw new Error ('Activity ' + id + ' already exists');
     }
-    const store = Store.create (id);
+    const values = {$component: component};
+    const store = Store.create (id, values);
     store._activityId = id;
     activities.set (id, store);
     return store;

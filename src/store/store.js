@@ -27,7 +27,7 @@ const secretKey = {};
 /******************************************************************************/
 
 class Store {
-  constructor (id, key) {
+  constructor (id, key, values) {
 
     if (key !== secretKey) {
       throw new Error ('Do not call Store constructor directly; use Store.create instead');
@@ -35,7 +35,7 @@ class Store {
 
     this._nodes = {};
     this._generation = 0;
-    this._rootNode = new Node ('', this);
+    this._rootNode = new Node ('', this, 0, values);
     this._id = id;
   }
 
@@ -91,8 +91,8 @@ class Store {
 
 /* static methods */
 
-  static create (id) {
-    return new Store (id, secretKey);
+  static create (id, values) {
+    return new Store (id, secretKey, values);
   }
 
   static link (props, id) {

@@ -33,6 +33,11 @@ describe ('Store', () => {
         expect (store.root).to.equal (store.getNode (''));
         expect (store.root).to.equal (store.findNode (''));
       });
+
+      it ('creates a store with an immutable root node', () => {
+        const store = Store.create ();
+        expect (() => Node.withValue (store.root, 'x', 1)).to.throw (Error);
+      });
     });
 
     describe ('Store.setNode()', () => {

@@ -111,6 +111,9 @@ class Node {
   }
 
   static with (node, mutation) {
+    if (node.id.length === 0) {
+      throw new Error ('Root node cannot be mutated');
+    }
     const generation = mutation.generation || node._generation;
     const store = mutation.store || node._store;
     const values = mutation.values || node._values;

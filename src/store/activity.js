@@ -22,7 +22,7 @@ class Activity {
     if (activities.has (id)) {
       throw new Error ('Activity ' + id + ' already exists');
     }
-    const store = new Store ();
+    const store = Store.create (id);
     store._activityId = id;
     activities.set (id, store);
     return store;

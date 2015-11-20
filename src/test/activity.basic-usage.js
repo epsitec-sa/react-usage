@@ -2,6 +2,7 @@
 
 import {expect} from 'mai-chai';
 import Activity from '../store/activity.js';
+import Store from '../store/store.js';
 
 describe ('Store Activity', () => {
 
@@ -18,6 +19,12 @@ describe ('Store Activity', () => {
 
     it ('throws if activity does not exist', () => {
       expect (() => Activity.get ('a')).to.throw (Error);
+    });
+
+    it ('returns an activity, which is a store', () => {
+      const activity = Activity.create ('a');
+      expect (activity.id).to.equal ('a');
+      expect (activity instanceof Store).to.be.true ();
     });
   });
 

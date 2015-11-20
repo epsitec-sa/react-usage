@@ -22,13 +22,21 @@ function updateTree (store, node, mutation) {
   return patchNode (store, Node.with (node, mutation));
 }
 
+const secretKey = {};
+
 /******************************************************************************/
 
 class Store {
-  constructor () {
+  constructor (id, key) {
+
+    if (key !== secretKey) {
+      throw new Error ('Do not call Store constructor directly; use Store.create instead');
+    }
+
     this._nodes = {};
     this._generation = 0;
     this._rootNode = new Node ('', this);
+    this._id = id;
   }
 
   getNode (id) {
@@ -65,6 +73,10 @@ class Store {
     }
   }
 
+  get id () {
+    return this._id;
+  }
+
   get generation () {
     return this._generation;
   }
@@ -79,8 +91,8 @@ class Store {
 
 /* static methods */
 
-  static create () {
-    return new Store ();
+  static create (id) {
+    return new Store (id, secretKey);
   }
 
   static link (props, id) {

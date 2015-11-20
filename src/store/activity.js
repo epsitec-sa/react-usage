@@ -4,17 +4,21 @@ import Store from './store.js';
 
 let activities = new Map ();
 
-class Activities {
+class Activity {
 
   static get (id) {
-    const store = activities.get (id);
+    const store = Activity.find (id);
     if (!store) {
       throw new Error ('Activity ' + id + ' does not exist');
     }
     return store;
   }
 
-  static createActivity (id) {
+  static find (id) {
+    return activities.get (id);
+  }
+
+  static create (id) {
     if (activities.has (id)) {
       throw new Error ('Activity ' + id + ' already exists');
     }
@@ -24,8 +28,14 @@ class Activities {
     return store;
   }
 
-  static deleteActivity (id) {
-    Activities.get (id); // make sure it exists
+  static delete (id) {
+    Activity.get (id); // make sure it exists
     activities.delete (id);
   }
+
+  static clear () {
+    activities.clear ();
+  }
 }
+
+module.exports = Activity;

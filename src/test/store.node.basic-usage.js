@@ -122,16 +122,16 @@ describe ('Node', () => {
       expect (Node.join ('a', 'b', 'c')).to.equal ('a.b.c');
     });
 
-    it ('joins multiple ids provided as an array', () => {
-      expect (Node.join (['a', 'b', 'c'])).to.equal ('a.b.c');
-      expect (Node.join ([])).to.equal ('');
+    it ('joins multiple ids provided as a spread', () => {
+      expect (Node.join (...['a', 'b', 'c'])).to.equal ('a.b.c');
+      expect (Node.join (...[])).to.equal ('');
     });
 
     it ('validates ids', () => {
       expect (() => Node.join ('x', '')).to.throw (Error);
       expect (() => Node.join ('x', 1)).to.throw (Error);
-      expect (() => Node.join (['x', ''])).to.throw (Error);
-      expect (() => Node.join (['x', 1])).to.throw (Error);
+      expect (() => Node.join (...['x', ''])).to.throw (Error);
+      expect (() => Node.join (...['x', 1])).to.throw (Error);
     });
   });
 });

@@ -62,17 +62,7 @@ class Node {
     return new Node (secretKey, '', store, 0, values || emptyValues);
   }
 
-  static join (ids) {
-    let args;
-    if (Array.isArray (ids)) {
-      args = ids;
-    } else {
-      args = new Array (arguments.length);
-      for (let i = 0; i < args.length; ++i) {
-        args[i] = arguments[i];
-      }
-    }
-
+  static join (...args) {
     for (let i = 0; i < args.length; ++i) {
       const arg = args[i];
       if ((typeof arg !== 'string') || arg.length === 0) {
@@ -100,19 +90,19 @@ class Node {
     }
   }
 
-  static withValues (node) {
-    if (arguments.length === 1) {
+  static withValues (node, ...args) {
+    if (args.length === 0) {
       return node;
     }
-    if (arguments.length % 2 !== 1) {
+    if (args.length % 2 !== 0) {
       throw new Error ('Invalid number of arguments');
     }
 
     var values;
 
-    for (let i = 1; i < arguments.length; i += 2) {
-      const id = arguments[i + 0];
-      const value = arguments[i + 1];
+    for (let i = 0; i < args.length; i += 2) {
+      const id = args[i + 0];
+      const value = args[i + 1];
       if (node._values[id] !== value) {
         if (!values) {
           values = {};

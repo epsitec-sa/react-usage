@@ -26,6 +26,7 @@
     "mai-chai": "^1.1.2",
     "mocha": "^2.3.4",
     "path": "^0.12.7",
+    "radium": "^0.15.3",
     "react": "^0.14.3",
     "react-addons-shallow-compare": "^0.14.3",
     "react-addons-test-utils": "^0.14.3",

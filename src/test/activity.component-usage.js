@@ -5,8 +5,7 @@ import {expect} from 'mai-chai';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import Activity from '../store/activity.js';
-import Node from '../store/node.js';
+import {Activity, Node} from 'electrum-store';
 
 import {ActivityView} from '../components/stateless/ActivityView.js';
 import {Workspace} from '../components/stateless/Workspace.js';

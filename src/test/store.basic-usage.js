@@ -2,8 +2,7 @@
 
 import {expect} from 'mai-chai';
 
-import Node from '../store/node.js';
-import Store from '../store/store.js';
+import {Node, Store} from 'electrum-store';
 
 describe ('Store', () => {
   describe ('basic operations', () => {

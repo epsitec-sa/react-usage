@@ -1,8 +1,7 @@
 'use strict';
 
 import {expect} from 'mai-chai';
-import Activity from '../store/activity.js';
-import Store from '../store/store.js';
+import {Activity, Store} from 'electrum-store';
 
 describe ('Store Activity', () => {
 

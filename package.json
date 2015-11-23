@@ -21,6 +21,7 @@
     "babel-preset-react": "^6.1.18",
     "babel-preset-stage-0": "^6.1.18",
     "chai": "^3.4.1",
+    "electrum-store": "0.0.2",
     "jsdom": "^7.0.2",
     "mai-chai": "^1.1.2",
     "mocha": "^2.3.4",

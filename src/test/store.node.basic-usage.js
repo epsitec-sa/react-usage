@@ -2,7 +2,7 @@
 
 import {expect} from 'mai-chai';
 
-import Node from '../store/node.js';
+import {Node} from 'electrum-store';
 
 describe ('Node', () => {
   describe ('new Node()', () => {

@@ -13,7 +13,7 @@ module.exports = function (wallaby) {
   return {
     files: [
       {pattern: 'test/test-helper.js'},
-      {pattern: 'src/store/**/*.js'},
+      // {pattern: 'src/store/**/*.js'},
       {pattern: 'src/components/**/*.js'}
     ],
     tests: [

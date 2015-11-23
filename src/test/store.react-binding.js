@@ -2,9 +2,7 @@
 
 import {expect} from 'mai-chai';
 
-import Node from '../store/node.js';
-import Store from '../store/store.js';
-
+import {Node, Store} from 'electrum-store';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';

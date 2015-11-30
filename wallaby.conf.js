@@ -14,7 +14,8 @@ module.exports = function (wallaby) {
     files: [
       {pattern: 'test/test-helper.js'},
       // {pattern: 'src/store/**/*.js'},
-      {pattern: 'src/components/**/*.js'}
+      {pattern: 'src/components/**/*.js'},
+      {pattern: 'src/themes/**/*.js'}
     ],
     tests: [
       {pattern: 'src/test/**/*.js'},

@@ -2,7 +2,7 @@
 
 import {expect} from 'mai-chai';
 
-import {Node, Store} from 'electrum-store';
+import {State, Store} from 'electrum-store';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
@@ -14,8 +14,8 @@ function pureRenderDecorator (component) {
   component.prototype.shouldComponentUpdate = function (nextProps, nextState) {
     log = (log +
       '|' +
-      this.props.node.generation +
-      '>' + nextProps.node.generation +
+      this.props.state.generation +
+      '>' + nextProps.state.generation +
       '=' +
       shallowCompare (this, nextProps, nextState));
     return shallowCompare (this, nextProps, nextState);
@@ -57,16 +57,18 @@ describe ('Store React binding', () => {
   describe ('Store.link()', () => {
     it ('propagates nodes and values through component tree', () => {
       const store = Store.create ();
-      const contentNode = Node.withValue (store.getNode ('post.content'), 'text', 'X');
-      const authorNode = Node.withValues (store.getNode ('post.author'), 'imageUrl', 'http://ima.ge/x.png', 'displayName', 'John Doe');
-      const postNode = store.getNode ('post');
+      const contentState = store.select ('post.content')
+        .set ('text', 'X');
+      const authorState = store.select ('post.author')
+        .set ('imageUrl', 'http://ima.ge/x.png', 'displayName', 'John Doe');
+      const postState = store.select ('post');
 
-      expect (contentNode.getValue ('text')).to.equal ('X');
-      expect (contentNode.id).to.equal ('post.content');
-      expect (authorNode.getValue ('displayName')).to.equal ('John Doe');
-      expect (authorNode.getValue ('imageUrl')).to.equal ('http://ima.ge/x.png');
+      expect (contentState.get ('text')).to.equal ('X');
+      expect (contentState.id).to.equal ('post.content');
+      expect (authorState.get ('displayName')).to.equal ('John Doe');
+      expect (authorState.get ('imageUrl')).to.equal ('http://ima.ge/x.png');
 
-      const form = <Post node={postNode} />;
+      const form = <Post state={postState} />;
       const html = ReactDOMServer.renderToStaticMarkup (form);
 
       expect (html).to.equal (
@@ -79,27 +81,27 @@ describe ('Store React binding', () => {
     it ('works well with render() and shouldComponentUpdate()', () => {
       const store = Store.create ();
 
-      Node.with (store.getNode ('post.content'), {values: {text: 'X'}});
-      Node.with (store.getNode ('post.author'), {values: {imageUrl: 'http://ima.ge/x.png', displayName: 'John Doe'}});
+      State.with (store.select ('post.content'), {values: {text: 'X'}});
+      State.with (store.select ('post.author'), {values: {imageUrl: 'http://ima.ge/x.png', displayName: 'John Doe'}});
 
       const mountNode = document.getElementById ('root');
 
       log = '';
-      ReactDOM.render (<Post node={store.findNode ('post')} />, mountNode);
+      ReactDOM.render (<Post state={store.select ('post')} />, mountNode);
       expect (log).to.equal ('/Post/Content/Author');
 
       log = '';
-      ReactDOM.render (<Post node={store.findNode ('post')} />, mountNode);
+      ReactDOM.render (<Post state={store.select ('post')} />, mountNode);
       expect (log).to.equal ('|4>4=false');
 
       log = '';
-      Node.withValue (store.findNode ('post.content'), 'text', 'Y');
-      ReactDOM.render (<Post node={store.findNode ('post')} />, mountNode);
+      store.select ('post.content').set ('text', 'Y');
+      ReactDOM.render (<Post state={store.select ('post')} />, mountNode);
       expect (log).to.equal ('|4>5=true/Post|2>5=true/Content|4>4=false');
 
       log = '';
-      Node.withValue (store.findNode ('post.author'), 'displayName', 'John');
-      ReactDOM.render (<Post node={store.findNode ('post')} />, mountNode);
+      store.select ('post.author').set ('displayName', 'John');
+      ReactDOM.render (<Post state={store.select ('post')} />, mountNode);
       expect (log).to.equal ('|5>6=true/Post|5>5=false|4>6=true/Author');
     });
   });

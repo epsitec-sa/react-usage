@@ -5,12 +5,12 @@ import {expect} from 'mai-chai';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import {Activity, Node} from 'electrum-store';
+import {Activity} from 'electrum-store';
 
 import {ActivityView} from '../components/stateless/ActivityView.js';
 import {Workspace} from '../components/stateless/Workspace.js';
 
-const Hello = props => <span>{'Text:' + props.node.getValue ('text')}</span>;
+const Hello = props => <span>{'Text:' + props.state.get ('text')}</span>;
 
 describe ('Activity components', () => {
   describe ('Workspace with ActivityView', () => {
@@ -28,8 +28,8 @@ describe ('Activity components', () => {
           <ActivityView act={Activity.get ('b')}/>
         </Workspace>;
 
-      Node.withValue (act1.getNode ('activity'), 'text', 'Hello');
-      Node.withValue (act2.getNode ('activity'), 'text', 'Bye');
+      act1.select ('activity').set ('text', 'Hello');
+      act2.select ('activity').set ('text', 'Bye');
 
       const html = ReactDOMServer.renderToStaticMarkup (doc);
 

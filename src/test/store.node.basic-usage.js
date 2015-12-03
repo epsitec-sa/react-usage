@@ -2,136 +2,137 @@
 
 import {expect} from 'mai-chai';
 
-import {Node} from 'electrum-store';
+import {State} from 'electrum-store';
 
-describe ('Node', () => {
-  describe ('new Node()', () => {
+describe ('State', () => {
+  describe ('new State()', () => {
     it ('requires valid id string', () => {
-      expect (() => Node.create ()).to.throw (Error);
-      expect (() => Node.create (123)).to.throw (Error);
-      expect (() => Node.create ('')).to.throw (Error);
-      expect (() => Node.create ('a')).to.not.throw (Error);
+      expect (() => State.create ()).to.throw (Error);
+      expect (() => State.create (123)).to.throw (Error);
+      expect (() => State.create ('')).to.throw (Error);
+      expect (() => State.create ('a')).to.not.throw (Error);
     });
 
-    it ('creates an empty node', () => {
-      const node = Node.create ('a');
-      expect (node.id).to.equal ('a');
-      expect (node.generation).to.equal (0);
+    it ('creates an empty state', () => {
+      const state = State.create ('a');
+      expect (state.id).to.equal ('a');
+      expect (state.generation).to.equal (0);
     });
   });
 
   describe ('has a default value', () => {
-    const node1 = Node.create ('a');
-    const node2 = Node.with (node1, {values: {'': 1}});
+    const state1 = State.create ('a');
+    const state2 = State.with (state1, {values: {'': 1}});
 
-    expect (node1.value).to.be.undefined ();
-    expect (node2.value).to.equal (1);
-    expect (node2.getValue ('')).to.equal (1);
+    expect (state1.value).to.be.undefined ();
+    expect (state2.value).to.equal (1);
+    expect (state2.get ('')).to.equal (1);
   });
 
   describe ('getParentId()', () => {
-    it ('returns null if there is no parent (id="a")', () => {
-      expect (Node.getParentId ('a')).to.be.null ();
+    it ('returns undefined if there is no parent (id="")', () => {
+      expect (State.getParentId ('a')).to.be.equal ('');
+      expect (State.getParentId ('')).to.be.undefined ();
     });
 
     it ('returns empty name for id=".a"', () => {
-      expect (Node.getParentId ('.a')).to.equal ('');
+      expect (State.getParentId ('.a')).to.equal ('');
     });
 
     it ('returns parent name for id="a.b.c"', () => {
-      expect (Node.getParentId ('a.b.c')).to.equal ('a.b');
+      expect (State.getParentId ('a.b.c')).to.equal ('a.b');
     });
   });
 
   describe ('with()', () => {
-    it ('returns new instance of node on change', () => {
-      const node1 = Node.create ('a');
-      const node2 = Node.with (node1, {generation: 1});
-      expect (node1.generation).to.equal (0);
-      expect (node2.generation).to.equal (1);
+    it ('returns new instance of state on change', () => {
+      const state1 = State.create ('a');
+      const state2 = State.with (state1, {generation: 1});
+      expect (state1.generation).to.equal (0);
+      expect (state2.generation).to.equal (1);
     });
 
-    it ('returns same instance of node on no-op', () => {
-      const node1 = Node.create ('a');
-      const node2 = Node.with (node1, {generation: 0});
-      expect (node1 === node2).to.be.true ();
+    it ('returns same instance of state on no-op', () => {
+      const state1 = State.create ('a');
+      const state2 = State.with (state1, {generation: 0});
+      expect (state1 === state2).to.be.true ();
     });
 
-    it ('returns same instance of node on empty update', () => {
-      const node1 = Node.create ('a', 10);
-      const node2 = Node.with (node1, {});
-      expect (node1 === node2);
-    });
-  });
-
-  describe ('Node.withValue()', () => {
-    it ('produces a new node when value changes', () => {
-      const node1 = Node.create ('a');
-      const node2 = Node.withValue (node1, 'x', 1);
-      const node3 = Node.withValue (node2, 'x', 2);
-      const node4 = Node.withValue (node3, 'x', 2);
-      const node5 = Node.withValue (node4, 'x', 1);
-      expect (node1.getValue ('x')).to.be.undefined ();
-      expect (node2.getValue ('x')).to.equal (1);
-      expect (node3.getValue ('x')).to.equal (2);
-      expect (node4.getValue ('x')).to.equal (2);
-      expect (node5.getValue ('x')).to.equal (1);
-      expect (node1).to.not.equal (node2);
-      expect (node2).to.not.equal (node3);
-      expect (node3).to.equal (node4);
-      expect (node4).to.not.equal (node5);
-      expect (node1).to.not.equal (node5);
+    it ('returns same instance of state on empty update', () => {
+      const state1 = State.create ('a');
+      const state2 = State.with (state1, {});
+      expect (state1 === state2);
     });
   });
 
-  describe ('Node.withValues()', () => {
+  describe ('State.withValue()', () => {
+    it ('produces a new state when value changes', () => {
+      const state1 = State.create ('a');
+      const state2 = State.withValue (state1, 'x', 1);
+      const state3 = State.withValue (state2, 'x', 2);
+      const state4 = State.withValue (state3, 'x', 2);
+      const state5 = State.withValue (state4, 'x', 1);
+      expect (state1.get ('x')).to.be.undefined ();
+      expect (state2.get ('x')).to.equal (1);
+      expect (state3.get ('x')).to.equal (2);
+      expect (state4.get ('x')).to.equal (2);
+      expect (state5.get ('x')).to.equal (1);
+      expect (state1).to.not.equal (state2);
+      expect (state2).to.not.equal (state3);
+      expect (state3).to.equal (state4);
+      expect (state4).to.not.equal (state5);
+      expect (state1).to.not.equal (state5);
+    });
+  });
+
+  describe ('State.withValues()', () => {
     it ('works with no values', () => {
-      const node1 = Node.create ('a');
-      const node2 = Node.withValues (node1);
-      expect (node1).to.equal (node2);
+      const state1 = State.create ('a');
+      const state2 = State.withValues (state1);
+      expect (state1).to.equal (state2);
     });
 
     it ('works with multiple values', () => {
-      const node1 = Node.create ('a');
-      const node2 = Node.withValues (node1, 'x', 1, 'y', 2);
-      const node3 = Node.withValues (node2, 'x', 1, 'y', 2);
-      expect (node1).to.not.equal (node2);
-      expect (node2.getValue ('x')).to.equal (1);
-      expect (node2.getValue ('y')).to.equal (2);
-      expect (node2).to.equal (node3);
+      const state1 = State.create ('a');
+      const state2 = State.withValues (state1, 'x', 1, 'y', 2);
+      const state3 = State.withValues (state2, 'x', 1, 'y', 2);
+      expect (state1).to.not.equal (state2);
+      expect (state2.get ('x')).to.equal (1);
+      expect (state2.get ('y')).to.equal (2);
+      expect (state2).to.equal (state3);
     });
 
     it ('updates values and keeps previous unchanged', () => {
-      const node1 = Node.create ('a');
-      const node2 = Node.withValues (node1, 'x', 1, 'y', 2);
-      const node3 = Node.withValues (node2, 'y', 0, 'z', 3);
-      expect (node3.getValue ('x')).to.equal (1);
-      expect (node3.getValue ('y')).to.equal (0);
-      expect (node3.getValue ('z')).to.equal (3);
+      const state1 = State.create ('a');
+      const state2 = State.withValues (state1, 'x', 1, 'y', 2);
+      const state3 = State.withValues (state2, 'y', 0, 'z', 3);
+      expect (state3.get ('x')).to.equal (1);
+      expect (state3.get ('y')).to.equal (0);
+      expect (state3.get ('z')).to.equal (3);
     });
 
     it ('throws on wrong argument count', () => {
-      const node1 = Node.create ('a');
-      expect (() => Node.withValues (node1, 'x')).to.throw (Error);
-      expect (() => Node.withValues (node1, 'x', 1, 'y')).to.throw (Error);
+      const state1 = State.create ('a');
+      expect (() => State.withValues (state1, 'x')).to.throw (Error);
+      expect (() => State.withValues (state1, 'x', 1, 'y')).to.throw (Error);
     });
   });
 
-  describe ('Node.join()', () => {
+  describe ('State.join()', () => {
     it ('joins multiple ids', () => {
-      expect (Node.join ('a', 'b', 'c')).to.equal ('a.b.c');
+      expect (State.join ('a', 'b', 'c')).to.equal ('a.b.c');
     });
 
     it ('joins multiple ids provided as a spread', () => {
-      expect (Node.join (...['a', 'b', 'c'])).to.equal ('a.b.c');
-      expect (Node.join (...[])).to.equal ('');
+      expect (State.join (...['a', 'b', 'c'])).to.equal ('a.b.c');
+      expect (State.join (...[])).to.equal ('');
     });
 
     it ('validates ids', () => {
-      expect (() => Node.join ('x', '')).to.throw (Error);
-      expect (() => Node.join ('x', 1)).to.throw (Error);
-      expect (() => Node.join (...['x', ''])).to.throw (Error);
-      expect (() => Node.join (...['x', 1])).to.throw (Error);
+      expect (() => State.join ('x', '')).to.throw (Error);
+      expect (() => State.join ('x', 1)).to.throw (Error);
+      expect (() => State.join (...['x', ''])).to.throw (Error);
+      expect (() => State.join (...['x', 1])).to.throw (Error);
     });
   });
 });

@@ -1,7 +1,7 @@
 'use strict';
 
-import {E} from 'electrum';
-import Theme from './default-theme.js';
+import E from 'electrum';
+import {Theme} from 'electrum-theme';
 
 /*****************************************************************************/
 
@@ -9,14 +9,15 @@ import Theme from './default-theme.js';
 // Lydia.getElectrumBus = () => require ('./implementations/bus.js');
 
 /*****************************************************************************/
-E.typo = {
-  font: Theme.contentFontFamily
-};
-E.palette = Theme.palette;
-E.colors = Theme.colors;
-E.transitions = Theme.transitions;
-E.spacing = Theme.spacing;
-E.shapes  = Theme.shapes;
+
+const theme = Theme.create ('default');
+
+E.typo = theme.typo;
+E.palette = theme.palette;
+E.colors = theme.colors;
+E.transitions = theme.transitions;
+E.spacing = theme.spacing;
+E.shapes  = theme.shapes;
 E.paperDebugColor = 'none';
 
 module.exports = E;

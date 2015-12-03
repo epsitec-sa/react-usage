@@ -1,6 +1,6 @@
 {
   "name": "react-usage",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "description": "Playground to experiment with React and wallaby.js.",
   "main": "index.js",
   "scripts": {
@@ -15,16 +15,18 @@
   "license": "MIT",
   "homepage": "https://github.com/epsitec-sa/react-usage",
   "devDependencies": {
-    "babel-core": "^6.2.4",
-    "babel-plugin-transform-decorators": "^6.2.4",
-    "babel-plugin-transform-react-display-name": "^6.2.4",
-    "babel-preset-es2015": "^6.2.4",
-    "babel-preset-react": "^6.2.4",
-    "babel-preset-stage-0": "^6.2.4",
+    "babel-cli": "^6.2.0",
+    "babel-core": "^6.2.1",
+    "babel-plugin-transform-decorators": "^6.1.18",
+    "babel-plugin-transform-react-display-name": "^6.1.18",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "babel-preset-stage-0": "^6.1.18",
     "chai": "^3.4.1",
-    "electrum": ">=1.2.0",
+    "electrum": "^2.0.1",
     "electrum-arc": ">=1.3.11",
-    "electrum-store": ">=0.1.1",
+    "electrum-store": "^1.0.2",
+    "electrum-theme": "^0.9.0",
     "jsdom": "^7.1.0",
     "mai-chai": "^1.1.2",
     "mocha": "^2.3.4",
@@ -34,6 +36,6 @@
     "react-addons-shallow-compare": "^0.14.3",
     "react-addons-test-utils": "^0.14.3",
     "react-dom": "^0.14.3",
-    "react-element-to-jsx-string": "^2.1.2"
+    "react-element-to-jsx-string": "^2.1.3"
   }
 }

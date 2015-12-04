@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 
-import {Button as Button} from '../components/arc/all.js';
+import {Button as Button} from '../components/components.js';
 
 describe ('Arc', () => {
   describe ('Button', () => {

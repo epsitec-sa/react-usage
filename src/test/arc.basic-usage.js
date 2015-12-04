@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 
-import {Button} from '../components/arc/all.js';
+import {Button as Button} from '../components/arc/all.js';
 
 describe ('Arc', () => {
   describe ('Button', () => {
@@ -19,7 +19,7 @@ describe ('Arc', () => {
       const store = Store.create ();
       const theme = Theme.create ('default');
       store.select ('b').set ('', 'Cancel');
-      const button = <Button state={store.select ('b')} theme={theme}/>;
+      const button = <Button state={store.select ('b')} theme={theme} kind='cancel'/>;
       const html = ReactDOMServer.renderToStaticMarkup (button);
       const expectedHtml =
         '<div>' +
@@ -40,7 +40,7 @@ describe ('Arc', () => {
       const store = Store.create ();
       const theme = Theme.create ('default');
       store.select ('b').set ('', 'Cancel');
-      const button = <Button state={store.select ('b')} theme={theme} disabled/>;
+      const button = <Button state={store.select ('b')} theme={theme} kind='cancel' disabled/>;
       const html = ReactDOMServer.renderToStaticMarkup (button);
       const expectedHtml =
         '<div>' +

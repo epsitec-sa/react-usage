@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = theme => {
-  return {
+export default theme =>
+  ({
     base: {
       display: 'inline-block',
       fontSize: 18,
@@ -41,5 +41,4 @@ module.exports = theme => {
     cancel: {
       fontStyle: 'italic',
     }
-  };
-};
+  });

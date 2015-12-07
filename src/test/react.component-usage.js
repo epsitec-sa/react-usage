@@ -125,6 +125,22 @@ describe ('React.Component', () => {
         ReactDOM.render (<Foo a={1} b='x' c='y'/>, mountNode);
         expect (spyConsoleError).to.be.called (2);
       });
+
+      it ('passes props to constructor', () => {
+        class Foo extends React.Component {
+          constructor (props) {
+            super (props);
+            expect (props).to.have.property ('a', 1);
+            expect (props).to.have.property ('b', 'x');
+            expect (props).to.have.property ('c', 'y');
+          }
+          render () {
+            return <div/>;
+          }
+        }
+        const mountNode = document.getElementById ('root');
+        ReactDOM.render (<Foo a={1} b='x' c='y'/>, mountNode);
+      });
     });
   });
 

@@ -6,6 +6,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import shallowCompare from 'react-addons-shallow-compare';
 
+import Title from '../components/Title.js';
+
 function pureRenderDecorator (component) {
   component.prototype.shouldComponentUpdate = function (nextProps, nextState) {
     return shallowCompare (this, nextProps, nextState);
@@ -60,6 +62,54 @@ describe ('React', () => {
       expect (SimpleHello.renderCount).to.equal (1);
       ReactDOM.render (<SimpleHello s={settings}/>, mountNode);
       expect (SimpleHello.renderCount).to.equal (1);
+    });
+
+    it ('calls constructor() once if props do not change', () => {
+      Title.clear ();
+      ReactDOM.render (<Title text='a'/>, mountNode);
+      expect (Title.getConstructorCount ()).to.equal (1);
+      ReactDOM.render (<Title text='a'/>, mountNode);
+      expect (Title.getConstructorCount ()).to.equal (1);
+    });
+
+    it ('calls constructor() once if props change', () => {
+      Title.clear ();
+      ReactDOM.render (<Title text='a'/>, mountNode);
+      expect (Title.getConstructorCount ()).to.equal (1);
+      ReactDOM.render (<Title text='b'/>, mountNode);
+      expect (Title.getConstructorCount ()).to.equal (1);
+    });
+
+    it ('calls render() once if props do not change', () => {
+      Title.clear ();
+      ReactDOM.render (<Title text='a'/>, mountNode);
+      expect (Title.getRenderCount ()).to.equal (1);
+      ReactDOM.render (<Title text='a'/>, mountNode);
+      expect (Title.getRenderCount ()).to.equal (1);
+    });
+
+    it ('calls render() twice if props change', () => {
+      Title.clear ();
+      ReactDOM.render (<Title text='a'/>, mountNode);
+      expect (Title.getRenderCount ()).to.equal (1);
+      ReactDOM.render (<Title text='b'/>, mountNode);
+      expect (Title.getRenderCount ()).to.equal (2);
+    });
+
+    it ('changes Title\'s instance props if props change, but keeps same Title instance', () => {
+      Title.clear ();
+      ReactDOM.render (<Title text='a'/>, mountNode);
+      ReactDOM.render (<Title text='b'/>, mountNode);
+      const constrs = Title.getConstructorTitles ();
+      const renders = Title.getRenderTitles ();
+      // Same component instance:
+      expect (constrs[0].obj).to.equal (renders[0].obj);
+      expect (constrs[0].obj).to.equal (renders[1].obj);
+      // Initial props passed to constructor match first render props:
+      expect (constrs[0].props).to.equal (renders[0].props);
+      // Current props changed after second render:
+      expect (constrs[0].props).to.not.equal (renders[1].props);
+      expect (constrs[0].obj.props).to.equal (renders[1].props);
     });
 
     it ('calls render() twice if props do change', () => {

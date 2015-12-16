@@ -1,9 +1,11 @@
 'use strict';
 
+import 'babel-polyfill';
 import {expect, spy} from 'mai-chai';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
 
 class Component extends React.Component {
   constructor (props) {
@@ -221,6 +223,63 @@ describe ('React.Component', () => {
       actions = '';
       ReactDOM.unmountComponentAtNode (mountNode);
       expect (actions).to.equal ('will-unmount/');
+    });
+  });
+
+  describe ('React.Children', () => {
+    class Container extends React.Component {
+      render () {
+        let items = React.Children.map (this.props.children, child => child) || [];
+        items = items.filter (x => !x.props.name.startsWith ('.'));
+        items.sort ((a, b) => a.props.name.localeCompare (b.props.name));
+        return <ul>{items}</ul>;
+      }
+    }
+
+    class Child extends React.Component {
+      render () {
+        return <li>{this.props.name}</li>;
+      }
+    }
+
+    describe ('Container without any children', () => {
+      it ('produces expected HTML', () => {
+        const html = ReactDOMServer.renderToStaticMarkup (
+          <Container/>);
+        expect (html).to.equal ('<ul></ul>');
+      });
+    });
+
+    describe ('Container with three children', () => {
+      it ('produces expected HTML', () => {
+        const html = ReactDOMServer.renderToStaticMarkup (
+          <Container>
+            <Child name='a'/>
+            <Child name='b'/>
+            <Child name='c'/>
+          </Container>);
+        expect (html).to.equal ('<ul><li>a</li><li>b</li><li>c</li></ul>');
+      });
+
+      it ('sorts items alphabetically', () => {
+        const html = ReactDOMServer.renderToStaticMarkup (
+          <Container>
+            <Child name='b'/>
+            <Child name='a'/>
+            <Child name='c'/>
+          </Container>);
+        expect (html).to.equal ('<ul><li>a</li><li>b</li><li>c</li></ul>');
+      });
+
+      it ('filters out items which start with a "."', () => {
+        const html = ReactDOMServer.renderToStaticMarkup (
+          <Container>
+            <Child name='.a'/>
+            <Child name='b'/>
+            <Child name='c'/>
+          </Container>);
+        expect (html).to.equal ('<ul><li>b</li><li>c</li></ul>');
+      });
     });
   });
 });

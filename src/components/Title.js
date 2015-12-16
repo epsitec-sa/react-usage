@@ -14,6 +14,9 @@ class Title extends React.Component {
   shouldComponentUpdate (nextProps, nextState) {
     return shallowCompare (this, nextProps, nextState);
   }
+  componentWillReceiveProps (nextProps) {
+    // console.log (nextProps);
+  }
   getText () {
     return 'Text:' + this.props.text;
   }

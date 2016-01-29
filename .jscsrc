@@ -37,7 +37,7 @@
 
   "disallowSpaceAfterPrefixUnaryOperators":   true,
   "disallowSpaceBeforePostfixUnaryOperators": true,
-  "disallowSpaceAfterObjectKeys":             true,
+  "disallowSpaceAfterObjectKeys":             { "allExcept": ["method"] },
 
   "disallowSpacesInsideArrayBrackets":        { "allExcept": [ "}", "]" ]},
   "disallowSpacesInsideObjectBrackets":       { "allExcept": [ "}", "]" ]},

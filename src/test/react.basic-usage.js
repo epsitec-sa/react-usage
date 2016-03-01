@@ -83,5 +83,33 @@ describe ('React', () => {
         expect (React.Children.map (null)).to.be.null ();
       });
     });
+
+    describe ('only()', () => {
+      class Bar extends React.Component {
+        render () {
+          const keys = ['a'];
+          return <Foo>{keys.map (k => <div key={k}/>)}</Foo>;
+        }
+      }
+      class Foo extends React.Component {
+        render () {
+          const {children} = this.props;
+          const child = React.Children.only (children);
+          expect (child).to.exist ();
+          return child;
+        }
+      }
+
+      it ('returns the only child', () => {
+        const mountNode = document.getElementById ('root');
+        ReactDOM.render (<Foo><div id='x'/></Foo>, mountNode);
+      });
+
+      it ('throws when only one child is present in an array of children', () => {
+        // See https://github.com/facebook/react/issues/6156
+        const mountNode = document.getElementById ('root');
+        expect (() => ReactDOM.render (<Bar/>, mountNode)).to.throw ('with exactly one child');
+      });
+    });
   });
 });
